@@ -25,7 +25,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async update(id: number, user: Partial<User>) {
+  async update(id: number, user: User) {
     await this.usersRepository.update(id, user);
     return this.usersRepository.findOne({ where: { id } });
   }

@@ -3,6 +3,8 @@ import { UsersModule } from './modules/users/users.module';
 import { User } from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserSeedModule } from './utils/seed/user-seed.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { UserSeedModule } from './utils/seed/user-seed.module';
       synchronize: true,
     }),
     UsersModule,
+    AuthModule,
+    LoggerModule,
     UserSeedModule,
   ],
   controllers: [],
