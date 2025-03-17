@@ -2,7 +2,9 @@ import { User } from '../../entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-// import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,13 +21,17 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { username } });
   }
 
-  async create(user: User) {
-    // @ToDo enable if password should be encrypted but than it cannot be shown in UI
-    // user.password = await bcrypt.hash(user.password, 10);
+  async create(user: CreateUserDto) {
+    user.password = await bcrypt.hash(user.password, 10);
     return this.usersRepository.save(user);
   }
 
-  async update(id: number, user: User) {
+  async update(id: number, user: UpdateUserDto) {
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 10);
+    } else {
+      delete user.password;
+    }
     await this.usersRepository.update(id, user);
     return this.usersRepository.findOne({ where: { id } });
   }

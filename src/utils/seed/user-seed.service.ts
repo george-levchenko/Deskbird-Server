@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../entities/user.entity';
+import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from '../../modules/users/dto/create-user.dto';
 
 @Injectable()
 export class UserSeedService {
@@ -14,7 +16,16 @@ export class UserSeedService {
     const count = await this.userRepository.count();
 
     if (!count) {
-      const users = [{ username: 'admin', password: 'admin', isAdmin: true }];
+      const password = await bcrypt.hash('admin', 10);
+      const users: CreateUserDto[] = [
+        {
+          username: 'admin',
+          password,
+          name: 'George',
+          email: 'george@gmail.com',
+          isAdmin: true,
+        },
+      ];
       await this.userRepository.save(users);
     }
   }

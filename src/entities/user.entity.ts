@@ -11,6 +11,12 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
+  @Column()
+  name: string;
+
+  @Column()
+  email: string;
+
   @Column({ nullable: false, default: false })
   isAdmin: boolean;
 }
