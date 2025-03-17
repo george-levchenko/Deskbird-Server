@@ -6,10 +6,9 @@ import {
   Delete,
   Body,
   Param,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
+import { User } from '../../entities/user.entity';
 
 @Controller('users')
 // @UseGuards(AuthGuard) @ToDo enable guard
@@ -22,7 +21,7 @@ export class UsersController {
   }
 
   @Post()
-  createUser(@Body() user) {
+  createUser(@Body() user: User) {
     return this.usersService.create(user);
   }
 

@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
-import { User } from './modules/users/user.entity';
+import { User } from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserSeedModule } from './utils/seed/user-seed.module';
 
 @Module({
   imports: [
@@ -11,11 +12,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 5432,
       username: 'postgres',
       password: 'password',
-      database: 'nestjs',
+      database: 'deskbird',
       entities: [User],
       synchronize: true,
     }),
     UsersModule,
+    UserSeedModule,
   ],
   controllers: [],
   providers: [],
