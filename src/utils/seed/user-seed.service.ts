@@ -16,14 +16,20 @@ export class UserSeedService {
     const count = await this.userRepository.count();
 
     if (!count) {
-      const password = await bcrypt.hash('admin', 10);
       const users: CreateUserDto[] = [
         {
           username: 'admin',
-          password,
+          password: await bcrypt.hash('admin', 10),
           name: 'George',
           email: 'george@gmail.com',
           isAdmin: true,
+        },
+        {
+          username: 'user1',
+          password: await bcrypt.hash('123456', 10),
+          name: 'Other Guy',
+          email: 'other-guy@gmail.com',
+          isAdmin: false,
         },
       ];
       await this.userRepository.save(users);
