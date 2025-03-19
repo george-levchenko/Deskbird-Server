@@ -1,5 +1,5 @@
 import { CreateUserDto } from './create-user.dto';
 
 export class UserDto extends CreateUserDto {
-  readonly id: string;
+  readonly id: number;
 }
