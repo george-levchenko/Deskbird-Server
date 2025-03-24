@@ -14,13 +14,11 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  @Length(5, 60)
   @Transform(({ value }): unknown => (value === '' ? null : value))
   name: string;
 
   @IsOptional()
   @IsEmail()
-  @Length(5, 60)
   @Transform(({ value }): unknown => (value === '' ? null : value))
   email: string;
 
