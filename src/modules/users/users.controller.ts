@@ -2,7 +2,8 @@ import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, ParseIntPip
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { JwtAuthGuard } from '../../utils/guards/jwt/jwt.guard';
+import { AdminGuard } from '../../utils/guards/admin/admin.guard';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
@@ -15,16 +16,19 @@ export class UsersController {
   }
 
   @Post()
+  @UseGuards(AdminGuard)
   createUser(@Body() user: CreateUserDto) {
     return this.usersService.create(user);
   }
 
   @Put(':id')
+  @UseGuards(AdminGuard)
   updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUserDto) {
     return this.usersService.update(id, user);
   }
 
   @Delete(':id')
+  @UseGuards(AdminGuard)
   deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.delete(id);
   }
