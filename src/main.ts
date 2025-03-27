@@ -4,6 +4,7 @@ import { UserSeedService } from './utils/seed/user-seed.service';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './utils/filters/http-exception.filter';
 import { LoggerService } from './utils/logger/logger.service';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +18,12 @@ async function bootstrap() {
   // app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
+
+  // CSRF protection not required because cookies are not used
+  // app.use(doubleCsrf(doubleCsrfOptions).doubleCsrfProtection);
+  app.use(helmet()); // Set security-related HTTP headers
   app.enableCors();
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

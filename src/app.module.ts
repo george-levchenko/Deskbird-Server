@@ -6,11 +6,22 @@ import { UserSeedModule } from './utils/seed/user-seed.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LoggerModule } from './utils/logger/logger.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './utils/guards/jwt/jwt.guard';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 100,
+        },
+      ],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -32,6 +43,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserSeedModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard, // JWT token for all except @Public
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard, // Rate limit for all
+    },
+  ],
 })
 export class AppModule {}

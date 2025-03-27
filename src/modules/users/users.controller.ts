@@ -2,11 +2,9 @@ import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, ParseIntPip
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../../utils/guards/jwt/jwt.guard';
 import { AdminGuard } from '../../utils/guards/admin/admin.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
